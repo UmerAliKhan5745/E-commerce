@@ -1,6 +1,5 @@
 "use client"
 import { useState } from 'react';
-import { addToCart } from '@/store/slices/cartSlices';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,7 +17,6 @@ function Cart() {
           <Offcanvas.Title>Shoping Cart</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-        <Button className='m-5'>AddToCart</Button><Button>ClearCart</Button>
         </Offcanvas.Body>
       </Offcanvas>
     </>

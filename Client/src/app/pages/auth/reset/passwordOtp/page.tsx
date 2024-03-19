@@ -1,6 +1,8 @@
 "use client";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+
+import React, { ChangeEvent, FormEvent ,useState} from 'react';
+
 import { Button, Alert } from "react-bootstrap";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
@@ -17,7 +19,7 @@ export default function EmailOtpInputPage() {
     email: ""
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -25,7 +27,7 @@ export default function EmailOtpInputPage() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:5000/api/auth/resetpassword", {

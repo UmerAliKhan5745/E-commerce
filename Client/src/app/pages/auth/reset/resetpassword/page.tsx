@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 import { Alert, Button, Modal } from "react-bootstrap";
 import { useRouter } from "next/navigation";
