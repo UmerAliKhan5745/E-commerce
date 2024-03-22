@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from 'react';
-import type { RootState } from '../../../../store'; // Assuming RootState is defined in ../../../../store
 import { useSelector, useDispatch } from 'react-redux';
 import { decrement, increment } from '../../../features/counter/counterSlice';
 import Button from 'react-bootstrap/Button';
@@ -10,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 export function Counter() {
-  const count = useSelector((state: RootState) => state.counter.value);
+  const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
 
   return (
