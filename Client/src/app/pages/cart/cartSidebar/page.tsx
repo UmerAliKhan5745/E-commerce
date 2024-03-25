@@ -2,36 +2,12 @@
 
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { decrement, increment } from '../../../features/counter/counterSlice';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
-export function Counter() {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
 
-  return (
-    <div>
-      <div>
-        <Button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          Increment
-        </Button>
-        <span>{count}</span>
-        <Button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </Button>
-      </div>
-    </div>
-  );
-}
 
 function Cart() {
   const [show, setShow] = useState(false);
@@ -46,7 +22,6 @@ function Cart() {
           <Offcanvas.Title>Shopping Cart</Offcanvas.Title> {/* Fixed title */}
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Counter /> {/* Render Counter component here */}
         </Offcanvas.Body>
       </Offcanvas>
     </>

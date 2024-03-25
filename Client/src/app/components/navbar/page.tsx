@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import { Container, Nav, Navbar } from "react-bootstrap";
@@ -29,9 +28,7 @@ function Navbarr() {
     router.push("/pages/auth/login");
     
   }
-if(authenticated==='loading'){
-  return <div>Loading...</div>
-}else{
+
   return (
     <>
       <div className="centre">
@@ -68,6 +65,6 @@ if(authenticated==='loading'){
       </div>
     </>
   );
-}
+
 }
 export default Navbarr;

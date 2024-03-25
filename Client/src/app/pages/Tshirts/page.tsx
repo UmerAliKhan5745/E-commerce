@@ -1,23 +1,61 @@
 "use client";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import React, { useState, useLayoutEffect } from "react";
-import { isAuthenticated } from "../../middleware/protectedRoute";
 import Navbarr from "@/app/components/navbar/page";
 import Footer from "@/app/components/footer/page";
+import { isAuthenticated } from "@/app/middleware/protectedRoute";
+import axios from "axios";
+import { fetchTshirtsIdSuccess, fetchTshirtsSuccess } from "@/app/features/tshirts/tshirtsSlice";
 
-export default function Tshirt() {
+// Define interface for Tshirt
+interface Tshirt {
+  _id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+}
+
+// Component function
+export default function Tshirts() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [authenticated, setAuthenticated] = useState("loading");
-  useLayoutEffect(() => {
+
+  // Fetch t-shirts data and authenticate user on component mount
+  useEffect(()=> {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/product/tshirts');
+        console.log(response)
+        dispatch(fetchTshirtsSuccess(response.data));
+      } catch (err) {
+        console.error('Failed to fetch tshirts:', err);
+      }
+    };
+
     const checkAuthentication = async () => {
       const auth = await isAuthenticated();
-      setAuthenticated(auth ? "accessing" : "not authenticated");
+      setAuthenticated(auth ? "accessing" : "not authenticated"); // Fixed state value
     };
+
     checkAuthentication();
-  }, []);
+    //  return()=> will asked by HS
+    fetchData();
+  }, [dispatch]);
+
+  // Get tshirts from Redux store
+  const tshirts = useSelector((state: any) => state.tshirts);
+console.log(tshirts,'umer')
+  // Function to handle Buy Now button click
+  const handleBuyNowClick = (productId: number) => {
+    // dispatch(fetchTshirtsIdSuccess(productId)); // Dispatching the action with the product ID as payload
+    router.push('/ProductDetails'); // Navigating to the ProductDetails page
+  };
+
+  // Render logic based on authentication state
   if (authenticated === "loading") {
     return <div>Loading...</div>;
   }
@@ -25,28 +63,30 @@ export default function Tshirt() {
     return (
       <>
         <Navbarr />
-        <h1 style={{ textAlign: "center", margin: "15px" }}>Tshirts Verity</h1>
-        <div className="m-auto row container  ">
-          <Card
-            style={{ width: "13rem", margin: " 15px auto" }}
-            className="shadow"
-          >
-            <Card.Img
-              variant="top"
-              src="https://m.media-amazon.com/images/I/71HuLCyNNhL._AC_UL800_FMwebp_QL65_.jpg"
-            />
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>Some quic.</Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+        <h1 style={{ textAlign: "center", margin: "15px" }}>Tshirts Variety</h1>
+        <div className="m-auto row container">
+          {tshirts.map((tshirt: Tshirt) => (
+            <Card key={tshirt._id} style={{ width: "13rem", margin: "15px auto", height: "55vh", padding: "15px" }} className="shadow">
+              <Card.Img variant="top" src={tshirt.imageUrl} />
+              <Card.Body>
+                <Card.Title>{tshirt.name}</Card.Title>
+                <Card.Text>{tshirt.description}</Card.Text>
+                <Button variant="primary" onClick={() => handleBuyNowClick(tshirt._id)}>Buy Now</Button>
+              </Card.Body>
+            </Card>
+          ))}
         </div>
         <hr />
         <Footer />
+        <style jsx>{`
+          .container {
+            min-height: calc(100vh - 150px);
+            position: relative;
+          }
+        `}</style>
       </>
     );
   } else {
-    return router.push("/pages/auth/login");
+    return router.push("/pages/auth/login"); // Redirect user to login page if not authenticated
   }
 }

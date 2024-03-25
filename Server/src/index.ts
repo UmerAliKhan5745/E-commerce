@@ -14,6 +14,8 @@ app.get('/', (req: Request, res: Response) => {
     
 });
 app.use('/api/auth',require('./routes/auth'))
+app.use('/api/product',require('./routes/products'))
+
 
 app.listen(port, () => {
 

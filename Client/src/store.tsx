@@ -1,13 +1,18 @@
-import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from '../src/app/features/counter/counterSlice'
+// store.ts
 
-export const store = configureStore({
+import { configureStore } from '@reduxjs/toolkit';
+import tshirtsReducer from './app/features/tshirts/tshirtsSlice';
+import stickersReducer from './app/features/stickers/stickersSlices'; // Corrected import
+import mugsReducer from './app/features/mugs/mugSlice';
+import hoddiesReducer from './app/features/hoddies/hoodiesSlice'; // Corrected import
+
+const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    tshirts: tshirtsReducer,
+    stickers: stickersReducer,
+    mugs: mugsReducer,
+    hoodies: hoddiesReducer // Corrected property name
   },
-})
+});
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export default store;

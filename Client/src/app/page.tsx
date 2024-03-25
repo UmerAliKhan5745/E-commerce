@@ -10,7 +10,12 @@ function page() {
 
       <Navbarr/>
       <MainSection/>
-      <Footer/> 
+      <Footer/> <style jsx>{`
+        .container {
+          min-height: calc(100vh - 150px);
+          position: relative;
+        }
+      `}</style> 
       </div>
   )
 }
