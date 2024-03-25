@@ -1,10 +1,10 @@
 // ../controllers/register.ts
 import {  Request, Response } from "express";
-import { User } from "../models/userschema";
+import { User } from "../../models/userschema";
 import bcrypt from "bcrypt";
 require("dotenv").config();
-import { Otp } from "../models/otpSchema";
-import { sendEmail } from "../utils/nodemailer/nodemailer";
+import { Otp } from "../../models/otpSchema";
+import { sendEmail } from "../../utils/nodemailer/nodemailer";
 const saltRounds = 10;
 // Controller to send OTP
 export const sendOtp = async (
@@ -15,7 +15,6 @@ export const sendOtp = async (
   try {
     // Check if the user already exists
     const existingUser = await User.findOne({ email: email });
-    console.log(existingUser);
     if (existingUser) {
       return res.status(200).json({
         // status code must 409  but its not working properly
@@ -57,11 +56,9 @@ export const sendOtp = async (
 export const register = async (req: Request, res: Response) => {
   try {
     const { email, OTP } = req.body;
-    // console.log(OTP);
 
     // Find the OTP record in the database using the provided OTP
     const otpRecord = await Otp.findOne({ userOtp: OTP });
-    // console.log(otpRecord);
 
     // Check if OTP record exists
     if (!otpRecord) {

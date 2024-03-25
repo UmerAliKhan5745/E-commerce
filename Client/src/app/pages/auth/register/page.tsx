@@ -37,10 +37,8 @@ export default function Register() {
             },
             body: JSON.stringify(values),
           });
-        // console.log(response)
           if (response.ok) {
             const data = await response.json();
-            // console.log(data);
             if (response.status === 201) {
               setAlertVariant("success");
               setAlertMessage(data.message);

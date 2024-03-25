@@ -36,16 +36,16 @@ function Navbarr() {
           <Container>
             <Navbar.Brand as={Link} href="/">CloudStore</Navbar.Brand>
             <Nav>
-              <Nav.Link as={Link} href="/pages/Tshirts">
+              <Nav.Link as={Link} href="/pages/page/Tshirts">
                 Tshirts
               </Nav.Link>
-              <Nav.Link as={Link} href="/pages/Mugs">
+              <Nav.Link as={Link} href="/pages/page/Mugs">
                 Mugs
               </Nav.Link>
-              <Nav.Link as={Link} href="/pages/Hoddies">
+              <Nav.Link as={Link} href="/pages/page/Hoddies">
                 Hoddies
               </Nav.Link>
-              <Nav.Link as={Link} href="/pages/Stickers">
+              <Nav.Link as={Link} href="/pages/page/Stickers">
                 Stickers
               </Nav.Link>
             </Nav>

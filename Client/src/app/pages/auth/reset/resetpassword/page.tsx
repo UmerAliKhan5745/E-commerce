@@ -37,7 +37,6 @@ export default function ResetPassword() {
         }
       );
       const responseData = await response.json();
-      console.log(responseData);
       if (responseData.status === "success") {
         setAlertVariant("success");
         setAlertMessage(responseData.message);

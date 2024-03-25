@@ -1,5 +1,4 @@
-// Hoodies.tsx
-"use client"
+"use client";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from "react";
@@ -9,8 +8,9 @@ import Navbarr from "@/app/components/navbar/page";
 import Footer from "@/app/components/footer/page";
 import { isAuthenticated } from "@/app/middleware/protectedRoute";
 import axios from "axios";
-import { fetchHoodiesSuccess } from "@/app/features/hoddies/hoodiesSlice";
-// Define interface for hoodie
+import { fetchHoodiesIdSuccess, fetchHoodiesSuccess } from "@/app/features/hoddies/hoodiesSlice";
+
+// Define interface for Hoodie
 interface Hoodie {
   _id: number;
   name: string;
@@ -29,8 +29,7 @@ export default function Hoodies() {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/product/hoodie');
-        console.log(response )
-        dispatch(fetchHoodiesSuccess(response.data)); // Dispatch the action to update the Redux store
+        dispatch(fetchHoodiesSuccess(response.data));
       } catch (err) {
         console.error('Failed to fetch hoodies:', err);
       }
@@ -42,16 +41,16 @@ export default function Hoodies() {
     };
 
     checkAuthentication();
-    
     fetchData();
   }, [dispatch]);
 
   // Get hoodies from Redux store
-  const hoodies = useSelector((state: any) => state.hoodies); // Assuming you have set up hoodies reducer correctly
-console.log(hoodies ,'umerali')
+  const hoodies = useSelector((state: any) => state.hoodies.hoodie);
+
   // Function to handle Buy Now button click
   const handleBuyNowClick = (productId: number) => {
-    router.push(`ProductDetails/${productId}`);
+    dispatch(fetchHoodiesIdSuccess(productId)); // Dispatching the action with the product ID as payload
+    router.push('/pages/ProductDetails/HoddieDetails'); // Navigating to the ProductDetails page
   };
 
   // Render logic based on authentication state

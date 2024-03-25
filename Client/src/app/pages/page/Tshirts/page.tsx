@@ -29,7 +29,6 @@ export default function Tshirts() {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/product/tshirts');
-        console.log(response)
         dispatch(fetchTshirtsSuccess(response.data));
       } catch (err) {
         console.error('Failed to fetch tshirts:', err);
@@ -47,12 +46,11 @@ export default function Tshirts() {
   }, [dispatch]);
 
   // Get tshirts from Redux store
-  const tshirts = useSelector((state: any) => state.tshirts);
-console.log(tshirts,'umer')
+  const tshirts = useSelector((state: any) => state.tshirts.tshirt);
   // Function to handle Buy Now button click
   const handleBuyNowClick = (productId: number) => {
-    // dispatch(fetchTshirtsIdSuccess(productId)); // Dispatching the action with the product ID as payload
-    router.push('/ProductDetails'); // Navigating to the ProductDetails page
+    dispatch(fetchTshirtsIdSuccess(productId)); // Dispatching the action with the product ID as payload
+    router.push('/pages/ProductDetails/TshirtsDetails'); // Navigating to the ProductDetails page
   };
 
   // Render logic based on authentication state

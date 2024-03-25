@@ -1,17 +1,21 @@
-// app/features/stickers/stickersSlice.ts
-
 import { createSlice } from '@reduxjs/toolkit';
 
 export const stickersSlice = createSlice({
   name: 'stickers',
-  initialState: [],
+  initialState: {
+    sticker: [], // Assuming this is your initial state structure
+    selectedStickerId: null, // Initialize selected sticker ID as null
+  },
   reducers: {
     fetchStickersSuccess(state, action) {
-      return action.payload;
+      state.sticker = action.payload;
+    },
+    fetchStickersIdSuccess(state, action) {
+      state.selectedStickerId = action.payload;
     },
   },
 });
 
-export const { fetchStickersSuccess } = stickersSlice.actions;
+export const { fetchStickersSuccess, fetchStickersIdSuccess } = stickersSlice.actions;
 
 export default stickersSlice.reducer;

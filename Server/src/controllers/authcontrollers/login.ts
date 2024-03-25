@@ -1,6 +1,6 @@
 // ../controllers/register.ts
 import { Request, Response } from "express";
-import { User } from "../models/userschema";
+import { User } from "../../models/userschema";
 import bcrypt from "bcrypt";
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
@@ -8,7 +8,6 @@ export const Login = async (req: Request, res: Response) => {
   let { email, password } = req.body;
   try {
     const user = await User.findOne({ email: email });
-    // console.log(user)
     if (!user) {
       return res.status(404).json({
         status: false,
@@ -38,7 +37,6 @@ export const Login = async (req: Request, res: Response) => {
       });
     }
    }}catch (err: any) {
-    console.log(err);
     res.status(500).json({
       status: "failed",
       message: "An error occurred during login",

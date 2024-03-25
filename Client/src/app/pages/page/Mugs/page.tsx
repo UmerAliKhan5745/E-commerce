@@ -8,31 +8,25 @@ import Navbarr from "@/app/components/navbar/page";
 import Footer from "@/app/components/footer/page";
 import { isAuthenticated } from "@/app/middleware/protectedRoute";
 import axios from "axios";
-import { fetchTshirtsSuccess } from "@/app/features/tshirts/tshirtsSlice";
+import { fetchMugsIdSuccess, fetchMugsSuccess } from "@/app/features/mugs/mugSlice";
 
-// Define interface for sticker
-interface sticker {
-  _id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-}
+// Define interface for Mug
+
 
 // Component function
-export default function Tshirts() {
+export default function Mugs() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [authenticated, setAuthenticated] = useState("loading");
 
-  // Fetch stickers data and authenticate user on component mount
+  // Fetch mugs data and authenticate user on component mount
   useEffect(()=> {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/product/sticker');
-        console.log(response)
-        dispatch(fetchTshirtsSuccess(response.data));
+        const response = await axios.get('http://localhost:5000/api/product/mug');
+        dispatch(fetchMugsSuccess(response.data));
       } catch (err) {
-        console.error('Failed to fetch sticker:', err);
+        console.error('Failed to fetch mugs:', err);
       }
     };
 
@@ -42,16 +36,16 @@ export default function Tshirts() {
     };
 
     checkAuthentication();
-    //  return()=> will asked by HS
     fetchData();
   }, [dispatch]);
 
-  // Get stickers from Redux store
-  const stickers = useSelector((state: any) => state.tshirts);
+  // Get mugs from Redux store
+  const mugs = useSelector((state) => state.mugs.mug);
 
   // Function to handle Buy Now button click
-  const handleBuyNowClick = (productId: number) => {
-    router.push(`/product-details/${productId}`);
+  const handleBuyNowClick = (productId) => {
+    dispatch(fetchMugsIdSuccess(productId)); // Dispatching the action with the product ID as payload
+    router.push('/pages/ProductDetails/MugDetails'); // Navigating to the ProductDetails page
   };
 
   // Render logic based on authentication state
@@ -62,15 +56,15 @@ export default function Tshirts() {
     return (
       <>
         <Navbarr />
-        <h1 style={{ textAlign: "center", margin: "15px" }}>stickers Variety</h1>
+        <h1 style={{ textAlign: "center", margin: "15px" }}>Mugs Variety</h1>
         <div className="m-auto row container">
-          {stickers.map((sticker: sticker) => (
-            <Card key={sticker._id} style={{ width: "13rem", margin: "15px auto", height: "55vh", padding: "15px" }} className="shadow">
-              <Card.Img variant="top" src={sticker.imageUrl} />
+          {mugs.map((mug) => (
+            <Card key={mug._id} style={{ width: "13rem", margin: "15px auto", height: "55vh", padding: "15px" }} className="shadow">
+              <Card.Img variant="top" src={mug.imageUrl} />
               <Card.Body>
-                <Card.Title>{sticker.name}</Card.Title>
-                <Card.Text>{sticker.description}</Card.Text>
-                <Button variant="primary" onClick={() => handleBuyNowClick(sticker._id)}>Buy Now</Button>
+                <Card.Title>{mug.name}</Card.Title>
+                <Card.Text>{mug.description}</Card.Text>
+                <Button variant="primary" onClick={() => handleBuyNowClick(mug._id)}>Buy Now</Button>
               </Card.Body>
             </Card>
           ))}

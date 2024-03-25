@@ -2,13 +2,13 @@
 import express from "express";
 import passport from "passport";
 const router = express.Router();
-import { register, sendOtp } from "../controllers/register";
-import { Login } from "../controllers/login";
+import { register, sendOtp } from "../controllers/authcontrollers/register";
+import { Login } from "../controllers/authcontrollers/login";
 import { validationsMiddleware } from '../validation/validation'
-import { getUserInfo } from "../controllers/getdata";
-import { resetpasswordemailesend } from "../controllers/resetpassword";
-import { resetpassword } from "../controllers/resetpassword";
-import { Protected } from "../controllers/protected";
+import { getUserInfo } from "../controllers/authcontrollers/getdata";
+import { resetpasswordemailesend } from "../controllers/authcontrollers/resetpassword";
+import { resetpassword } from "../controllers/authcontrollers/resetpassword";
+import { Protected } from "../controllers/authcontrollers/protected";
 
 // Route for accessing protected resources, requires authentication
 router.post('/protected', passport.authenticate('jwt', { session: false }), Protected);

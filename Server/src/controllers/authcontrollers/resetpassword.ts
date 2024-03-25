@@ -1,8 +1,8 @@
 import { NextFunction } from "express";
-import { User } from "../models/userschema";
-import { Otp } from "../models/otpSchema";
+import { User } from "../../models/userschema";
+import { Otp } from "../../models/otpSchema";
 import bcrypt from "bcrypt";
-import { sendEmail } from "../utils/nodemailer/nodemailer";
+import { sendEmail } from "../../utils/nodemailer/nodemailer";
 const saltRounds = 10;
 export const resetpasswordemailesend = async (req: any, res: any, next: NextFunction) => {
   try {
@@ -34,7 +34,6 @@ export const resetpassword = async (req: any, res: any) => {
     const { email, password, OTP } = req.body;
     // Find the OTP record in the database using the provided OTP
     const otpRecord = await Otp.findOne({ userOtp: OTP });
-    // console.log(OTP)
     // Check if OTP record exists
     if (!otpRecord) {
       return res.status(400).json({

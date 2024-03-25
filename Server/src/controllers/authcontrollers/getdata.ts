@@ -1,12 +1,10 @@
-import { User } from "../models/userschema";
+import { User } from "../../models/userschema";
 import express, { Request, Response } from "express";
 export const getUserInfo = async (req: any, res: Response) => {
   try {
     const decodedUser = req.user._id;
-    // console.log(decodedUser)
     // Assuming your User model has a method to find a user by ID
     const user = await User.findById({_id: decodedUser });
-    // console.log(user);
     if (user) {
       // Send user information in the response
       res.status(200).json({

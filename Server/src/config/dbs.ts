@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 require('dotenv').config();
 
 // const url = process.env.MONGODB;
-// console.log(url)
 const connectToDatabase = async () => {
   try {
     const client = await mongoose.connect('mongodb://localhost:27017/e-commerce');

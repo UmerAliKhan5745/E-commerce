@@ -1,14 +1,21 @@
-// app/features/stickers/stickersSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
+
 export const mugsSlice = createSlice({
   name: 'mugs',
-  initialState: [],
+  initialState: {
+    mug: [], // Assuming this is your initial state structure
+    selectedMugId: null, // Initialize selected Mug ID as null
+  },
   reducers: {
-    fetchmugsSuccess(state, action) {   
-      return action.payload;
+    fetchMugsSuccess(state, action) {
+      state.mug = action.payload;
+    },
+    fetchMugsIdSuccess(state, action) {
+      state.selectedMugId = action.payload;
     },
   },
 });
-export const { fetchmugsSuccess } = mugsSlice.actions;
+
+export const { fetchMugsSuccess, fetchMugsIdSuccess } = mugsSlice.actions;
 
 export default mugsSlice.reducer;

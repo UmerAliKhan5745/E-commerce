@@ -35,7 +35,6 @@ export default function Login() {
         }),
       });
       const responseData = await response.json();
-      console.log(responseData);
       if (responseData.status) {
         setAlertVariant("success");
         setAlertMessage(responseData.message);
@@ -44,7 +43,6 @@ export default function Login() {
           router.push("/");
         }, 500);
       } else {
-        console.log("apple");
         setAlertVariant("danger");
         setAlertMessage(responseData.message);
       }

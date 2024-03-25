@@ -14,5 +14,4 @@ const store = configureStore({
     hoodies: hoddiesReducer // Corrected property name
   },
 });
-
 export default store;
