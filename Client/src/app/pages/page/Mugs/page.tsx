@@ -40,10 +40,10 @@ export default function Mugs() {
   }, [dispatch]);
 
   // Get mugs from Redux store
-  const mugs = useSelector((state) => state.mugs.mug);
+  const mugs = useSelector((state:any) => state.mugs.mug);
 
   // Function to handle Buy Now button click
-  const handleBuyNowClick = (productId) => {
+  const handleBuyNowClick = (productId:number) => {
     dispatch(fetchMugsIdSuccess(productId)); // Dispatching the action with the product ID as payload
     router.push('/pages/ProductDetails/MugDetails'); // Navigating to the ProductDetails page
   };
@@ -58,14 +58,14 @@ export default function Mugs() {
         <Navbarr />
         <h1 style={{ textAlign: "center", margin: "15px" }}>Mugs Variety</h1>
         <div className="m-auto row container">
-          {mugs.map((mug) => (
-            <Card key={mug._id} style={{ width: "13rem", margin: "15px auto", height: "55vh", padding: "15px" }} className="shadow">
-              <Card.Img variant="top" src={mug.imageUrl} />
+          {mugs.map((mug:any) => (
+            <Card key={mug._id} style={{ width: "13rem", margin: "45px auto", height: "55vh", padding: "15px" }} className="shadow">
+              <Card.Img variant="top"className="my-5" src={mug.imageUrl} />
               <Card.Body>
                 <Card.Title>{mug.name}</Card.Title>
-                <Card.Text>{mug.description}</Card.Text>
-                <Button variant="primary" onClick={() => handleBuyNowClick(mug._id)}>Buy Now</Button>
+                <Card.Text>{mug.description.slice(0,75)}...</Card.Text>
               </Card.Body>
+                <Button variant="primary"  className="my-5" onClick={() => handleBuyNowClick(mug._id)}>Buy Now</Button>
             </Card>
           ))}
         </div>

@@ -23,7 +23,7 @@ export const productSchema = new mongoose.Schema({
 
 export const tshirtSchema = new mongoose.Schema({
   size: {
-    type: String,
+    type: [String],
     required: true
   },
   // Add more specific fields for t-shirts
@@ -39,7 +39,7 @@ export const mugSchema = new mongoose.Schema({
 
 export const hoodieSchema = new mongoose.Schema({
   size: {
-    type: String,
+    type: [String],
     required: true
   },
   color: {
@@ -51,9 +51,11 @@ export const hoodieSchema = new mongoose.Schema({
 
 export const stickerSchema = new mongoose.Schema({
   dimensions: {
-    type: String,
-    required: true
-  },
+    width: { type: Number, required: true },
+    height: { type: Number, required: true },
+    unit: { type: String, required: true }
+  }
+  
   // Add more specific fields for stickers
 });
 

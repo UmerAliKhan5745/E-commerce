@@ -64,13 +64,13 @@ export default function Hoodies() {
         <h1 style={{ textAlign: "center", margin: "15px" }}>Hoodies Variety</h1>
         <div className="m-auto row container">
           {hoodies.map((hoodie: Hoodie) => (
-            <Card key={hoodie._id} style={{ width: "13rem", margin: "15px auto", height: "55vh", padding: "15px" }} className="shadow">
-              <Card.Img variant="top" src={hoodie.imageUrl} />
+            <Card key={hoodie._id} style={{ width: "13rem", margin: "45px auto", height: "55vh", padding: "10px" }} className="shadow">
+              <Card.Img variant="top" style={{height:"188px"}} src={hoodie.imageUrl} />
               <Card.Body>
                 <Card.Title>{hoodie.name}</Card.Title>
-                <Card.Text>{hoodie.description}</Card.Text>
-                <Button variant="primary" onClick={() => handleBuyNowClick(hoodie._id)}>Buy Now</Button>
+                <Card.Text>{hoodie.description.slice(0,48)}...</Card.Text>
               </Card.Body>
+                <Button variant="primary"className="my-1" onClick={() => handleBuyNowClick(hoodie._id)}>Buy Now</Button>
             </Card>
           ))}
         </div>

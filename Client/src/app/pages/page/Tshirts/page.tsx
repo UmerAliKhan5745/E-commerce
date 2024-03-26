@@ -9,15 +9,6 @@ import Footer from "@/app/components/footer/page";
 import { isAuthenticated } from "@/app/middleware/protectedRoute";
 import axios from "axios";
 import { fetchTshirtsIdSuccess, fetchTshirtsSuccess } from "@/app/features/tshirts/tshirtsSlice";
-
-// Define interface for Tshirt
-interface Tshirt {
-  _id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-}
-
 // Component function
 export default function Tshirts() {
   const router = useRouter();
@@ -46,9 +37,9 @@ export default function Tshirts() {
   }, [dispatch]);
 
   // Get tshirts from Redux store
-  const tshirts = useSelector((state: any) => state.tshirts.tshirt);
+  const tshirts = useSelector((state) => state.tshirts.tshirt);
   // Function to handle Buy Now button click
-  const handleBuyNowClick = (productId: number) => {
+  const handleBuyNowClick = (productId) => {
     dispatch(fetchTshirtsIdSuccess(productId)); // Dispatching the action with the product ID as payload
     router.push('/pages/ProductDetails/TshirtsDetails'); // Navigating to the ProductDetails page
   };
@@ -62,15 +53,15 @@ export default function Tshirts() {
       <>
         <Navbarr />
         <h1 style={{ textAlign: "center", margin: "15px" }}>Tshirts Variety</h1>
-        <div className="m-auto row container">
-          {tshirts.map((tshirt: Tshirt) => (
-            <Card key={tshirt._id} style={{ width: "13rem", margin: "15px auto", height: "55vh", padding: "15px" }} className="shadow">
+        <div className="m-auto row container  ">
+          {tshirts.map((tshirt) => (
+            <Card key={tshirt._id} style={{ width: "13rem", margin: "40px auto", height: "55vh", padding: "15px" }} className="shadow">
               <Card.Img variant="top" src={tshirt.imageUrl} />
               <Card.Body>
                 <Card.Title>{tshirt.name}</Card.Title>
-                <Card.Text>{tshirt.description}</Card.Text>
-                <Button variant="primary" onClick={() => handleBuyNowClick(tshirt._id)}>Buy Now</Button>
+                <Card.Text>{tshirt.description.slice(0,45)}...</Card.Text>
               </Card.Body>
+              <Button variant="primary" className="m-3" onClick={() => handleBuyNowClick(tshirt._id)}>Buy Now</Button>
             </Card>
           ))}
         </div>

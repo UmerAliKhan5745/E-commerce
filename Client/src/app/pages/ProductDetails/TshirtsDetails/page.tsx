@@ -5,11 +5,16 @@ import Navbarr from "@/app/components/navbar/page";
 import Footer from "@/app/components/footer/page";
 import { useSelector } from 'react-redux';
 import { isAuthenticated } from "@/app/middleware/protectedRoute";
+interface tshirt {
+  name:string;
+  description:string;
+  imageUrl:string
+}
 
 function Page() {
   const [authenticated, setAuthenticated] = useState("loading");
-  const tshirtsid = useSelector((state) => state.tshirts.selectedTshirtId);
-  const [tshirtData, setTshirtData] = useState(null); // State to store fetched t-shirt data
+  const tshirtsid = useSelector((state:any) => state.tshirts.selectedTshirtId);
+  const [tshirtData, setTshirtData] = useState<tshirt>(); // State to store fetched t-shirt data
 
   // Fetch t-shirts data and authenticate user on component mount
   useEffect(()=> {
@@ -45,7 +50,7 @@ function Page() {
             <h2>T-Shirt Details</h2>
             <div>
               <p>Name: {tshirtData && tshirtData.name}</p>
-              <p>Description: {tshirtData && tshirtData.description}</p>
+              <p className='offset-8'>Description: {tshirtData && tshirtData.description}</p>
               <img src={tshirtData && tshirtData.imageUrl} alt={tshirtData && tshirtData.name} />
             </div>
           </>

@@ -9,10 +9,6 @@ import Footer from "@/app/components/footer/page";
 import { isAuthenticated } from "@/app/middleware/protectedRoute";
 import axios from "axios";
 import { fetchStickersIdSuccess, fetchStickersSuccess } from "@/app/features/stickers/stickersSlices";
-
-// Define interface for Sticker
-
-
 // Component function
 export default function Stickers() {
   const router = useRouter();
@@ -20,7 +16,7 @@ export default function Stickers() {
   const [authenticated, setAuthenticated] = useState("loading");
 
   // Fetch stickers data and authenticate user on component mount
-  useEffect(()=> {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/product/sticker');
@@ -40,10 +36,10 @@ export default function Stickers() {
   }, [dispatch]);
 
   // Get stickers from Redux store
-  const stickers = useSelector((state) => state.stickers.sticker);
+  const stickers = useSelector((state: any) => state.stickers.sticker);
 
   // Function to handle Buy Now button click
-  const handleBuyNowClick = (productId) => {
+  const handleBuyNowClick = (productId: number) => {
     dispatch(fetchStickersIdSuccess(productId)); // Dispatching the action with the product ID as payload
     router.push('/pages/ProductDetails/StickerDetails'); // Navigating to the ProductDetails page
   };
@@ -58,14 +54,14 @@ export default function Stickers() {
         <Navbarr />
         <h1 style={{ textAlign: "center", margin: "15px" }}>Stickers Variety</h1>
         <div className="m-auto row container">
-          {stickers.map((sticker) => (
-            <Card key={sticker._id} style={{ width: "13rem", margin: "15px auto", height: "55vh", padding: "15px" }} className="shadow">
+          {stickers.map((sticker: any) => (
+            <Card key={sticker._id} style={{ width: "13rem", margin: "45px auto", height: "55vh", padding: "15px" }} className="shadow">
               <Card.Img variant="top" src={sticker.imageUrl} />
               <Card.Body>
                 <Card.Title>{sticker.name}</Card.Title>
-                <Card.Text>{sticker.description}</Card.Text>
-                <Button variant="primary" onClick={() => handleBuyNowClick(sticker._id)}>Buy Now</Button>
+                <Card.Text>{sticker.description.slice(0,25)}...</Card.Text>
               </Card.Body>
+                <Button variant="primary" className="m-3" onClick={() => handleBuyNowClick(sticker._id)}>Buy Now</Button>
             </Card>
           ))}
         </div>
