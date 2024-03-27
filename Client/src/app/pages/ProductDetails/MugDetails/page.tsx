@@ -3,22 +3,34 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbarr from "@/app/components/navbar/page";
 import Footer from "@/app/components/footer/page";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { isAuthenticated } from "@/app/middleware/protectedRoute";
+import Button from "react-bootstrap/Button";
+import { addItem } from "@/app/features/cart/cartSlice";
 
-function Page() {
+interface Mug {
+  name: string;
+  description: string;
+  imageUrl: string;
+  price: number; 
+  capacity: string[];
+  mugId: number;
+}
+
+function MugPage() {
   const [authenticated, setAuthenticated] = useState("loading");
-  const mugid = useSelector((state) => state.mugs.selectedMugId);
-  const [mugData, setTmugData] = useState(null); // State to store fetched t-shirt data
+  const mugId: number = useSelector((state: any) => state.mugs.selectedMugId);
+  const [mugData, setMugData] = useState<Mug | null>(null); // State to store fetched mug data
+  const dispatch = useDispatch();
 
-  // Fetch t-shirts data and authenticate user on component mount
-  useEffect(()=> {
+  // Fetch mug data and authenticate user on component mount
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/product/mugdetails/:${mugid}`);
-        setTmugData(response.data);
+        const response = await axios.get(`http://localhost:5000/api/product/mugdetails/${mugId}`);
+        setMugData(response.data);
       } catch (err) {
-        console.error('Failed to fetch tshirts:', err);
+        console.error('Failed to fetch mug:', err);
       }
     };
 
@@ -29,7 +41,14 @@ function Page() {
 
     checkAuthentication();
     fetchData();
-  }, [mugid]);
+  }, [mugId]);
+
+  // Function to handle adding item to cart
+  const handleAddToCart = () => {
+    if (mugData) {
+      dispatch(addItem(mugData)); // Dispatch addItem action with the selected mug data
+    }
+  };
 
   if (authenticated === "loading") {
     return <div>Loading...</div>;
@@ -39,20 +58,23 @@ function Page() {
     <div className="page-container">
       <Navbarr />
       <div className="content">
-        {authenticated === "accessing" ? (
+        {authenticated === "accessing" && mugData && (
           <>
-            {/* Render t-shirt data for authenticated users */}
-            <h2>Mugs Details</h2>
-            <div>
-              <p>Name: {mugData && mugData.name}</p>
-              <p>Description: {mugData && mugData.description}</p>
-              <img src={mugData && mugData.imageUrl} alt={mugData && mugData.name} />
+            <h2>Mug Details</h2>
+            <h5 style={{ textAlign: "center", margin: "20px" }}>Name: {mugData.name}</h5>
+            <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+              <img style={{ display: "block", width: '40%', height: 'auto' }} src={mugData.imageUrl} alt={mugData.name} />
+              <div style={{ width: '40%' }}>Description: {mugData.description}
+                <h4 style={{ lineHeight: "2" }}>Price: ${mugData.price}</h4>
+                <h3 >Capacity: {mugData.capacity}</h3>
+                <Button onClick={handleAddToCart}>Add To Cart</Button>
+              </div>
             </div>
           </>
-        ) : (
-          <div>Please log in to view Mugs details.</div>
         )}
+        {authenticated !== "accessing" && <div>Please log in to view mug details.</div>}
       </div>
+      <hr />
       <Footer />
       <style jsx>{`
         .page-container {
@@ -69,4 +91,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default MugPage;

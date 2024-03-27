@@ -3,38 +3,41 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // Define type for item in the cart
 interface CartItem {
   id: number; // Unique identifier for the item
-  // Add other properties as needed
 }
 
-// Define type for the initial state
 interface CartState {
   items: CartItem[];
+  id: number | null; // Allow id to be null
 }
 
 const initialState: CartState = {
   items: [],
+  id: null, // Initialize id as null
 };
+
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addItem(state, action) {
+    addItem(state, action: PayloadAction<CartItem>) {
       const newItem = action.payload;
       const existingItem = state.items.find(item => item.id === newItem.id);
-      if (existingItem) {
-        // If the item already exists in the cart, increment its quantity
-        existingItem.quantity++;
-      } else {
-        // Otherwise, add the item to the cart with a quantity of 1
-        state.items.push({ ...newItem, quantity: 1 });
+      if (!existingItem) {
+        // If the item doesn't already exist in the cart, add it
+        state.items.push(newItem);
+        console.log(state.items,"0")
       }
     },
+    
     removeItem(state, action: PayloadAction<number>) {
-      state.items = state.items.filter(item => item.id !== action.payload);
+      state.items.splice(action.payload ,1   )
+
+      // state.items = state.items.filter(item => item.id === action.payload);
     },
     clearCart(state) {
       state.items = [];
+      
     },
   },
 });

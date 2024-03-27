@@ -3,22 +3,34 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbarr from "@/app/components/navbar/page";
 import Footer from "@/app/components/footer/page";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { isAuthenticated } from "@/app/middleware/protectedRoute";
+import Button from "react-bootstrap/Button";
+import { addItem } from "@/app/features/cart/cartSlice";
 
-function Page() {
+interface Sticker {
+  name: string;
+  description: string;
+  imageUrl: string;
+  price: number; 
+  dimensions: string[];
+  stickerId: number;
+}
+
+function StickerPage() {
   const [authenticated, setAuthenticated] = useState("loading");
-  const stickerid = useSelector((state) => state.stickers.selectedStickerId);
-  const [stickertData, setTstickerData] = useState(null); // State to store fetched t-shirt data
+  const stickerId: number = useSelector((state: any) => state.stickers.selectedStickerId);
+  const [stickerData, setStickerData] = useState<Sticker | null>(null); // State to store fetched sticker data
+  const dispatch = useDispatch();
 
-  // Fetch t-shirts data and authenticate user on component mount
-  useEffect(()=> {
+  // Fetch sticker data and authenticate user on component mount
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/product/stickerdetails/:${stickerid}`);
-        setTstickerData(response.data);
+        const response = await axios.get(`http://localhost:5000/api/product/stickerdetails/${stickerId}`);
+        setStickerData(response.data);
       } catch (err) {
-        console.error('Failed to fetch tshirts:', err);
+        console.error('Failed to fetch sticker:', err);
       }
     };
 
@@ -29,7 +41,14 @@ function Page() {
 
     checkAuthentication();
     fetchData();
-  }, [stickerid]);
+  }, [stickerId]);
+
+  // Function to handle adding item to cart
+  const handleAddToCart = () => {
+    if (stickerData) {
+      dispatch(addItem(stickerData)); // Dispatch addItem action with the selected sticker data
+    }
+  };
 
   if (authenticated === "loading") {
     return <div>Loading...</div>;
@@ -39,20 +58,26 @@ function Page() {
     <div className="page-container">
       <Navbarr />
       <div className="content">
-        {authenticated === "accessing" ? (
+        {authenticated === "accessing" && stickerData && (
           <>
-            {/* Render t-shirt data for authenticated users */}
             <h2>Sticker Details</h2>
-            <div>
-              <p>Name: {stickertData && stickertData.name}</p>
-              <p>Description: {stickertData && stickertData.description}</p>
-              <img src={stickertData && stickertData.imageUrl} alt={stickertData && stickertData.name} />
+            <h5 style={{ textAlign: "center", margin: "20px" }}>Name: {stickerData.name}</h5>
+            <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+              <img style={{ display: "block", width:'20%' , height: 'auto' }} src={stickerData.imageUrl} alt={stickerData.name} />
+              <div style={{ width: '40%' }}>Description: {stickerData.description}
+                <h4 style={{ lineHeight: "2" }}>Price: ${stickerData.price}</h4>
+                <h5 >Dimensions Height: {stickerData.dimensions.width}</h5>
+                <h5 >Dimensions Width: {stickerData.dimensions.height}</h5>
+                <h5 >Dimensions Unit: {stickerData.dimensions.unit}</h5>
+
+                <Button onClick={handleAddToCart}>Add To Cart</Button>
+              </div>
             </div>
           </>
-        ) : (
-          <div>Please log in to view Sticker details.</div>
         )}
+        {authenticated !== "accessing" && <div>Please log in to view sticker details.</div>}
       </div>
+      <hr />
       <Footer />
       <style jsx>{`
         .page-container {
@@ -69,4 +94,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default StickerPage;

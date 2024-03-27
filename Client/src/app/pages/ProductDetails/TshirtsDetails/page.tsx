@@ -12,20 +12,22 @@ interface Tshirt {
   name: string;
   description: string;
   imageUrl: string;
-  price: number; // Added price to Tshirt interface
+  price: number; 
+  size: string[];
+  tshirtsid: number;
 }
 
 function Page() {
   const [authenticated, setAuthenticated] = useState("loading");
-  const tshirtsid = useSelector((state: any) => state.tshirts.selectedTshirtId);
-  const [tshirtData, setTshirtData] = useState<Tshirt>(); // State to store fetched t-shirt data
+  const tshirtsid: number = useSelector((state: any) => state.tshirts.selectedTshirtId);
+  const [tshirtData, setTshirtData] = useState<Tshirt | null>(null); // State to store fetched t-shirt data
   const dispatch = useDispatch();
 
   // Fetch t-shirts data and authenticate user on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/product/tshirtsdetails/:${tshirtsid}`);
+        const response = await axios.get(`http://localhost:5000/api/product/tshirtsdetails/${tshirtsid}`);
         setTshirtData(response.data);
       } catch (err) {
         console.error('Failed to fetch tshirts:', err);
@@ -56,22 +58,21 @@ function Page() {
     <div className="page-container">
       <Navbarr />
       <div className="content">
-        {authenticated === "accessing" ? (
+        {authenticated === "accessing" && tshirtData && (
           <>
             <h2>T-Shirt Details</h2>
-            <h5 style={{ textAlign: "center", margin: "20px" }}>Name: {tshirtData && tshirtData.name}</h5>
+            <h5 style={{ textAlign: "center", margin: "20px" }}>Name: {tshirtData.name}</h5>
             <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
-              <img style={{ display: "block", width: '40%', height: 'auto' }} src={tshirtData && tshirtData.imageUrl} alt={tshirtData && tshirtData.name} />
-              <div style={{ width: '40%' }}>Description: {tshirtData && tshirtData.description}
-                <h4 style={{ lineHeight: "2" }}>Price: ${tshirtData && tshirtData.price}</h4>
-                <h3 >Size: {tshirtData && tshirtData.size}</h3>
+              <img style={{ display: "block", width: '40%', height: 'auto' }} src={tshirtData.imageUrl} alt={tshirtData.name} />
+              <div style={{ width: '40%' }}>Description: {tshirtData.description}
+                <h4 style={{ lineHeight: "2" }}>Price: ${tshirtData.price}</h4>
+                <h3 >Size: {tshirtData.size}</h3>
                 <Button onClick={handleAddToCart}>Add To Cart</Button>
               </div>
             </div>
           </>
-        ) : (
-          <div>Please log in to view t-shirt details.</div>
         )}
+        {authenticated !== "accessing" && <div>Please log in to view t-shirt details.</div>}
       </div>
       <hr />
       <Footer />
